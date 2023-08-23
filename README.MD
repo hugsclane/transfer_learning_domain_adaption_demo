@@ -28,4 +28,5 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
     - all 36 month loans
     - average of $8500
     - max of $15,000
+<br />
 sidenote "These are loans made to borrowers that do not meet Lending Club’s current credit policy standards." I wonder what the status of these loans are now that intrest rates aren't comfortably at 0.
