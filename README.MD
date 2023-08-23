@@ -14,5 +14,5 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
 - The dataset in transfer-learning-in-credit-risk issue date, but the dataset used in this demo only has issue month/year, not the specific date
 - The dataset has state instead of zip code.
 - The data has total credit limit, if tot_hi_cred_lim an amalgamation of other data types instead of just total credit limit, they will be different.
-- term, sub_grade,intrest_rate,installment seem to be the same
-- Revolving utilization $$ \text{ru} =  \frac{\text{bal}}{\text{cred_lim}} $$  total_credit_utilized is defined as being the total credit balance, or $$\text{total_credit} - \text{balance}$$ so Revolving_utilization in this data set should be calculable as $$ \text{ru} =  \frac{\text{total_credit}- \text{balance}}{\text{cred_lim}}$$ 
+- term, sub_grade, intrest_rate, installment seem to be the same
+- Revolving utilization $ \text{ru} =  \frac{\text{bal}}{\text{cred_lim}} $  total_credit_utilized is defined as being the total credit balance, or $\text{total_credit} - \text{balance}$ so Revolving_utilization in this data set should be calculable as $ \text{ru} =  \frac{\text{total_credit}- \text{balance}}{\text{cred_lim}}$ 
