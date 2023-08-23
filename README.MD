@@ -24,8 +24,8 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
         - total_credit_limit
         - open_credit_lines
         - total_credit_lines
-    - grade is f and G with intrest ranging from 23.5% to 26.06%
+    - grade is F and G with intrest ranging from 23.5% to 26.06%
     - all 36 month loans
     - average of $8500
     - max of $15,000
-        sidenote "These are loans made to borrowers that do not meet Lending Club’s current credit policy standards." I wonder what the status of these loans are now that intrest rates aren't comfortably at 0.
+sidenote "These are loans made to borrowers that do not meet Lending Club’s current credit policy standards." I wonder what the status of these loans are now that intrest rates aren't comfortably at 0.
