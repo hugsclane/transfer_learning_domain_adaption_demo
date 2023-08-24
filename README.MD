@@ -14,25 +14,6 @@ This repo aims to replicate the transfer learning methods as an aide to personal
 ## Notes about dataset
 The dataset linked in transfer-learning-in-credit-risk is not acceible via the link, instead this demo uses https://www.openintro.org/data/index.php?data=loans_full_schema, which seems like a similar datasets but it has the following discrepancies.
 
-Lending Club is a platorm that allows lending between individuals, the loans_purpose field will allow us to separate the data into separate domains.(check Rfile in source repo)
-\n
-Those domains are:
-- moving
-- debt_consolidation
-- other
-- credit_card
-- home_improvement
-- medical
-- house
-- small_business
-- car
-- major_purchase
-- vacation
-- renewable_energy
-
-other,major_purchase are vauge enough that they will be exlcuded as target domains.
-debt_consolidation and credit_card are the most plentiful (5144,2249 respectivly), so they will be our source and target domain for now.
-
 - The dataset in transfer-learning-in-credit-risk issue date, but the dataset used in this demo only has issue month/year, not the specific date
 - The dataset has state instead of zip code, zipcode will be excluded.
 - The data has total credit limit, if tot_hi_cred_lim an amalgamation of other data types instead of just total credit limit, they will be different.
@@ -51,7 +32,28 @@ debt_consolidation and credit_card are the most plentiful (5144,2249 respectivly
     - average of $8500
     - max of $15,000
 - by these conditions, no policy code 2 borrower data exists in the dataset so policy code will be excluded.
+
 sidenote "These are loans made to borrowers that do not meet Lending Club’s current credit policy standards." I wonder what the status of these loans are now that intrest rates aren't comfortably at 0.
+
+
+Lending Club is a platorm that allows lending between individuals, the loans_purpose field will allow us to separate the data into separate domains.(check Rfile in source repo)
+\n
+Those domains are:
+- moving
+- debt_consolidation
+- other
+- credit_card
+- home_improvement
+- medical
+- house
+- small_business
+- car
+- major_purchase
+- vacation
+- renewable_energy
+
+other,major_purchase are vauge enough that they will be exlcuded as target domains.
+debt_consolidation and credit_card are the most plentiful (5144,2249 respectivly), so they will be our source and target domain for now.
 
 
 ## Notes about the model.
