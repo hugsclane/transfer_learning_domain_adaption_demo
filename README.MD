@@ -23,7 +23,7 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
 - cover is \[ $\frac{\text{annual income}}{\text{loan amount}} \]
 - balance might be the same metric as average current balance.
 - all_util is total_credit_utilized
-- cover is generted from \[ $\frac{\text{annual income}}{\text{loan_amount}} $\]
+- cover is generted from \[ $\frac{\text{annual income}}{\text{loan amount}} $\]
 - policy codes seem to be an internal way for lending club to rate the security of its loans all loans shoud be classified as policy code unless they meet the following conditions according to https://www.fintechnexus.com/policy-code-2-loans-lending-club/. We can populate this code field by filtering for those conditions.
     - All credit datafields are blank, Credit datafields are, if it doesnt populate we can change it. 
         - total_credit_utilized
@@ -77,7 +77,7 @@ Transfer learning component of the model will attempt to describe target domain 
 
 The model will be a classifcation model, that has an additional optimization variable (layer?), the relative source/target feature data impact ratios (They might not be ratios, but that is how I will interpret it for now).
 
-# GiniROC (wow)
+# GiniROC
 The quality of the scoring model. was in the paper determined by computing the GiniROC over the results of the model, this implementation wont deviate, GiniROC will split data in Classification and regression tree algorithims in the same manner as GiniROC. This will give a measure of model quality, before the classification step which occurs in the credit decisioning process.
 
 Next we want to produce a probability of default, there is a logistic regression model method and a credit scoring method, we will the credit scoring method which is \[ $PD=(A-B*\text{Score})^C$ \] where A,B, and C are parameters from the model calibration process.
