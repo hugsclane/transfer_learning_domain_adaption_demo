@@ -83,5 +83,5 @@ The quality of the scoring model. was in the paper determined by computing the G
 Next we want to produce a probability of default, there is a logistic regression model method and a credit scoring method, we will the credit scoring method which is \[ $PD=(A-B*\text{Score})^C$ \] where A,B, and C are parameters from the model calibration process.
 
 # Model config:
-$M_0 is the inital cofig of the NN, $P_e$ is a set of hyper parameters to train $M_e$. $t_e$ is the training data, and $F_e$ is the set of features derived from $t_e$ constructing the model required these 4 factors to be constructed, we already have $t_e$.
+$M_0$ is the inital config of the NN, $P_e$ is a set of hyper parameters to train $M_e$. $t_e$ is the training data, and $F_e$ is the set of features derived from $t_e$ constructing the model required these 4 factors to be constructed, we already have $t_e$.
 
