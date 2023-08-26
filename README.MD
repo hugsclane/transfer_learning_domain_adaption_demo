@@ -14,7 +14,7 @@ This repo aims to replicate the transfer learning methods as an aide to personal
 ## Notes about dataset
 The dataset linked in transfer-learning-in-credit-risk is not acceible via the link, instead this demo uses https://www.openintro.org/data/index.php?data=loans_full_schema, which seems like a similar datasets but it has the following discrepancies.
 
-- The dataset in transfer-learning-in-credit-risk issue date, but the dataset used in this demo only has issue month/year, not the specific date
+- The dataset in transfer-learning-in-credit-risk issue date, but the dataset used in this demo only has issue month/year, not the specific date. 
 - The dataset has state instead of zip code, zipcode will be excluded.
 - The data has total credit limit, if tot_hi_cred_lim an amalgamation of other data types instead of just total credit limit, they will be different.
 - emp_length is already represented as floating point values in my dataset, however there is not data from <  \[ $1\text{ year}$ \] in the dataset.
@@ -65,9 +65,9 @@ debt_consolidation and credit_card are the most plentiful (5144,2249 respectivly
 # encoding
 - grade and sub_grade map A..Z to 7..1 and 1..5 to [9,7,5,3,1]
 - employment length with invalid fields are set to 0
--
 
 # other
+Removed issue month and state from the dataframe
 after encoding catagorical data, the author of transfer-learning-in-credit-risk does 2 statistically important things to the data in preprocessing.
  - trims datavalues 10,000 std away from the mean as a way of removing outliers. (by filtering the dataframe)
  - normalizes the data (maps it to (0,1])
@@ -82,4 +82,6 @@ The quality of the scoring model. was in the paper determined by computing the G
 
 Next we want to produce a probability of default, there is a logistic regression model method and a credit scoring method, we will the credit scoring method which is \[ $PD=(A-B*\text{Score})^C$ \] where A,B, and C are parameters from the model calibration process.
 
+# Model config:
+$M_0 is the inital cofig of the NN, $P_e$ is a set of hyper parameters to train $M_e$. $t_e$ is the training data, and $F_e$ is the set of features derived from $t_e$ constructing the model required these 4 factors to be constructed, we already have $t_e$.
 

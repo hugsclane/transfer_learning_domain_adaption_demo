@@ -9,9 +9,9 @@ from keras.utils import plot_model
 data_dir_path = os.path.join(os.path.dirname(os.path.abspath(__file__)) ,'data')
 
 def main():
-    pre_pro_mod = True #serves as a way to indicate if preprocessing has been modified so as to regenerate data
+    pre_pro_mod = False #serves as a way to indicate if preprocessing has been modified so as to regenerate data
     data = preprocess_df(pre_pro_mod)
-    #model_something(data,'debt_consolidation','credit_card')
+    transfer_model(data,'debt_consolidation','credit_card')
     #print(data['loan_purpose'].value_counts())
 
 ## Takes csv files in
@@ -32,6 +32,7 @@ def data_to_df(filename): #modify if we need more df inputs that arent data.
 def preprocess_df(pre_pro_mod):
     ## Preprocessing is based on steps from https://gitlab.com/richdataco/rdc-public/rdc-ic/research/transfer-learning/ecmlpkdd2019/-/blob/master/preprocess_lending_club_files.R?ref_type=heads.
     input_file_name = 'loans_full_schema'
+    df = data_to_df(input_file_name + ".csv")
     '''
     When pre_pro_mod is False, preprocess_df will return previously generated data.
     '''
@@ -84,28 +85,37 @@ def preprocess_df(pre_pro_mod):
     Map emp_length to floats
     '''
     df.loc[np.isnan(df['emp_length']), 'emp_length'] = 0
-    
+
     '''
     Map loan outcomes to binary outcomes
     '''
     df['loan_status'] = np.where(df['loan_status'] == 'Fully Paid', 1, 0)
-    
+
     '''
     Data columns to be included in the model.
     '''
-    col_ls = ['issue_month','state','total_credit_limit','term','sub_grade',\
+    df_fil = df[df['application_type'] == 'individual']
+    col_ls = ['total_credit_limit','term','sub_grade',\
             'revol_util','interest_rate','installment','grade','emp_length',\
             'debt_to_income','balance','total_credit_utilized','accounts_opened_24m',\
-            'loan_status', 'loan_purpose','application_type','annual_income','loan_amount','cover']
+            'loan_status','annual_income','loan_amount','cover']
+    '''
+    Drop non-numeric data filter out any non-individual applicants.
+    '''
+    df_num = df.drop(['issue_month','state'],axis=1)
+    df_num = df_num[(df_num['application_type'] == 'individual')]
+    df_num = df_num.drop(['application_type'],axis = 1)
     '''
     Normaliztion and standard deviation trim.
     '''
-    #:TODO trim_function = lambda col:
-    # normalize_function = lambda col: (col - col.min()) / \
-    #     (col.max() - col.min() if col.max() - col.min() != 0 else 1)
-    #     norm_df_ df[col_ls].apply(trim_function).apply(normalize_function)
-    df[col_ls].to_csv(os.path.join(data_dir_path, input_file_name + '_trimmed_normal_data'+".csv"), sep = ',',mode= 'w')
-    return df[col_ls]
+
+    trim_function = lambda col: col[np.abs(col - col.mean()) <= (std_trim * col.std())]
+    normalize_function = lambda col: (col - col.min()) / (col.max() - col.min() if col.max() - col.min() != 0 else 1)
+    norm_df = df_num[col_ls].apply(trim_function).apply(normalize_function)
+    norm_df = norm_df[col_ls] 
+    norm_df['loan_purpose'] = df['loan_purpose']
+    norm_df.to_csv(os.path.join(data_dir_path, input_file_name + '_trimmed_normal_data'+".csv"), sep = ',',mode= 'w')
+    return norm_df
 
 def source_target_split(data,sName,tName,spl_ratio):
     rand_seed = 54
@@ -114,18 +124,30 @@ def source_target_split(data,sName,tName,spl_ratio):
     returns source and target splits.
     '''
     df_size =  len(data[data['loan_purpose'] == sName].axes[0]) if len(data[data['loan_purpose'] == sName].axes[0])< \
-        len(data[data['loan_purpose'] == tName].axes[0]) else len(data[data['loan_purpose'] ==tName].axes[0]) #checks which loan_purpose is smaller then uses that as the maximum size for the sum of samples.
+    len(data[data['loan_purpose'] == tName].axes[0]) else len(data[data['loan_purpose'] ==tName].axes[0]) #checks which loan_purpose is smaller then uses that as the maximum size for the sum of samples.
     s_df = data[data['loan_purpose'] == sName].sample(n = round(df_size*spl_ratio) , random_state=rand_seed)
     t_df = data[data['loan_purpose'] == tName].sample(n = round(df_size*(1-spl_ratio)),  random_state=rand_seed)
     '''
     Will fail if sampling did not occur correctly.
     '''
+    s_df,t_dt = s_df.drop("loan_purpose",axis=1),t_df.drop("loan_purpose",axis=1)
     assert(df_size == len(s_df.axes[0]) + len(t_df.axes[0]))
     return s_df,t_df
 
 
-def model_something(data,sName,tName):
-    spl_ratio = 0
+def transfer_model(data,sName,tName):
+    spl_ratio_ls = [1.0,0.75,0.71,0.6,0.46,0] #for generating models with different network configs
+    spl_ratio = 1 #temp ratio to check initial model.
+    #:TODO implment gini performance measuring over target domain.
+    # Gini = g(test(M_e,s_e)
+    # M_e = train(M_0,P_e,t_e,F_e)
+    #:TODO develop M_0,
+    #:TODO tune hyperparemeters
+    #:TODO derive features from
+    #:TODO split M_e into fixed and free segments
+    #:TODO train M_free_e => M_free_n
+    #:TODO use combine to merge M_fixed_e and M_free_n into M_tranfser
+    # Call Gini from M_tranfser and domain test data.
     s_df,t_df = source_target_split(data,sName,tName,spl_ratio)
     return
 

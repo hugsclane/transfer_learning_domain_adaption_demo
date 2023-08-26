@@ -5,16 +5,19 @@ def main():
     '''
     Exploring data without preprocessing
     '''
-    #data_no_pp = data_to_df("loans_full_schema.csv")
-    #check_policy_code(data_no_pp)
-    #unique_values_in_(data_no_pp)
+    data_no_pp = data_to_df("loans_full_schema.csv")
+    # check_policy_code(data_no_pp)
+    # unique_values_in_(data_no_pp)
+    # print(data_no_pp['grade'].isna().sum())
+    # print(data_no_pp['sub_grade'].isna().sum())
+    print(data_no_pp['term'].unique())
     #print(data_no_pp.dtypes)
     '''
     Exploring data with preprocessing
     '''
-    data_with_pp= data_to_df("loans_full_schema_trimmed_normal_data.csv")
-    unique_values_in_(data_with_pp)
-    print(data_with_pp.dtypes)
+    # data_with_pp= data_to_df("loans_full_schema_trimmed_normal_data.csv")
+    # unique_values_in_(data_with_pp)
+    # print(data_with_pp.dtypes)
 
 '''
 Check data for policy_code 2 values.
