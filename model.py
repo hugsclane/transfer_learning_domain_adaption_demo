@@ -143,7 +143,7 @@ def transfer_model(data,sName,tName):
     # M_e = train(M_0,P_e,t_e,F_e)
     #:TODO develop M_0,
     #:TODO tune hyperparemeters
-    #:TODO derive features from
+    #:TODO derive features from t_e
     #:TODO split M_e into fixed and free segments
     #:TODO train M_free_e => M_free_n
     #:TODO use combine to merge M_fixed_e and M_free_n into M_tranfser
