@@ -23,7 +23,7 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
 - cover is \[ $\frac{\text{annual income}}{\text{loan amount}} \]
 - balance might be the same metric as average current balance.
 - all_util is total_credit_utilized
-- cover is generted from \[ $\frac{\text{annual income}}{\text{loan amount}} $\]
+- cover is generted from \[ $\frac{\text{annual income}}{\text{loan amount}}$ \]
 - policy codes seem to be an internal way for lending club to rate the security of its loans all loans shoud be classified as policy code unless they meet the following conditions according to https://www.fintechnexus.com/policy-code-2-loans-lending-club/. We can populate this code field by filtering for those conditions.
     - All credit datafields are blank, Credit datafields are, if it doesnt populate we can change it. 
         - total_credit_utilized
