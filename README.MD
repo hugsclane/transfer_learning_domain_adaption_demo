@@ -20,7 +20,7 @@ The dataset linked in transfer-learning-in-credit-risk is not acceible via the l
 - emp_length is already represented as floating point values in my dataset, however there is not data from <  \[ $1\text{ year}$ \] in the dataset.
 - term, sub_grade, intrest_rate, installment,  debt_to_income, account_open_past_24mths, loan_status. loan_purpose, application_type, annual_income and loan_amount seem to be the same
 - Revolving utilization is periodic utilization of lines of credit that are currently being repayed, since lines of credit might be closed in total_credit_utilized it may not idicatate Revolving_utilizaiton, since there are not better tools calculate it from what I can see I will use \[$\frac{\text{total credit utilized}}{\text{total credit limit}}]. This might be inaccurate, check later.
-- cover is \[ $\frac{\text{annual income}}{\text{loan amount}} \]
+- cover is \[ $\frac{\text{annual income}}{\text{loan amount}}$ \]
 - balance might be the same metric as average current balance.
 - all_util is total_credit_utilized
 - cover is generted from \[ $\frac{\text{annual income}}{\text{loan amount}}$ \]
