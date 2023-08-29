@@ -124,21 +124,24 @@ def source_target_split(data,sName,tName,spl_ratio):
     returns source and target splits.
     '''
     df_size =  len(data[data['loan_purpose'] == sName].axes[0]) if len(data[data['loan_purpose'] == sName].axes[0])< \
-    len(data[data['loan_purpose'] == tName].axes[0]) else len(data[data['loan_purpose'] ==tName].axes[0]) #checks which loan_purpose is smaller then uses that as the maximum size for the sum of samples.
+    #checks which loan_purpose is smaller then uses that as the maximum size for the sum of samples.
+    len(data[data['loan_purpose'] == tName].axes[0]) else len(data[data['loan_purpose'] ==tName].axes[0]) 
     s_df = data[data['loan_purpose'] == sName].sample(n = round(df_size*spl_ratio) , random_state=rand_seed)
     t_df = data[data['loan_purpose'] == tName].sample(n = round(df_size*(1-spl_ratio)),  random_state=rand_seed)
+
+    s_df,t_dt = s_df.drop("loan_purpose",axis=1),t_df.drop("loan_purpose",axis=1)
     '''
     Will fail if sampling did not occur correctly.
     '''
-    s_df,t_dt = s_df.drop("loan_purpose",axis=1),t_df.drop("loan_purpose",axis=1)
     assert(df_size == len(s_df.axes[0]) + len(t_df.axes[0]))
+
     return s_df,t_df
 
-
 def transfer_model(data,sName,tName):
-    spl_ratio_ls = [1.0,0.75,0.71,0.6,0.46,0] #for generating models with different network configs
+    #for generating models with different network configs
+    spl_ratio_ls = [1.0,0.75,0.71,0.6,0.46,0]
     spl_ratio = 1 #temp ratio to check initial model.
-    #:TODO implment gini performance measuring over target domain.
+    #gini(score,result)
     # Gini = g(test(M_e,s_e)
     # M_e = train(M_0,P_e,t_e,F_e)
     #:TODO develop M_0,
@@ -150,6 +153,38 @@ def transfer_model(data,sName,tName):
     # Call Gini from M_tranfser and domain test data.
     s_df,t_df = source_target_split(data,sName,tName,spl_ratio)
     return
+def linear_model(n_inputs,n_outputs,n_layers,n_nodes):
+    
+
+def gini(score,result):
+    # count obsevations and positive outcomes
+    n, n_pos = len(score), sum(result)
+
+    # Combine the scores and outcomes, then sort the combined data by score in descending order
+    combined_data = list(zip(fscore, foutcome))
+    combined_data.sort(key=lambda x: x[0], reverse=True)
+
+    # Create a list of sequence numbers and initialize the cumulative outcome counter
+    seq = list(range(1, n + 1))
+    cum_outcome = 0
+
+    # Calculates the number of observations with lower scores that have positive outcomes,
+    # and updates cumulative outcomes. :NOTE this will only work in python 3.8+
+    above = [(seq.pop(0) - (cum_outcome := cum_outcome + outcome)) for _, outcome in combined_data]
+
+    # Calculates contibution of some observation to the gini calculation.
+    area = [abv * outcome for abv, (_, outcome) in zip(above, combined_data)]
+
+    '''
+    The Gini coefficient is calculated using the intermediate values area and above
+    to find the area under the curve to measure the inequality
+    in the distribution of outcomes across the observations.
+    '''
+
+    auc = 1 - sum(area) / (n_pos * (n - n_pos))
+    gini = auc * 2 - 1
+
+    return gini
 
 ''' BELOW ARE NOTES FOR DEVLOPMENT DOWN THE LINE, YOU CAN IGNORE THIS
 use KS to quant delta source(sd) and target domain(ts).
