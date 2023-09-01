@@ -153,8 +153,22 @@ def transfer_model(data,sName,tName):
     # Call Gini from M_tranfser and domain test data.
     s_df,t_df = source_target_split(data,sName,tName,spl_ratio)
     return
+'''
+This model is a slightly refactored generic linear model based on Andrew Voumard's model_generic :
+function found in :
+https://gitlab.com/richdataco/rdc-public/rdc-ic/research/transfer-learning/ecmlpkdd2019/-/blob/master/allcommon.py
+'''
 def linear_model(n_inputs,n_outputs,n_layers,n_nodes):
-    
+    #total layers is n_layers + an input layer and an output layer
+    total_layers = n_layers + 2
+
+    model_layers = [Input(shape=(n_inputs,))] + \
+        [Dense(n_nodes, activation='relu')(model_layers[i - 1])\
+         for i in range(1, n_layers + 1)]
+    output = Dense(n_nodes, activation = 'sigmoid')(model_layers[-1])
+    model = Model(inputs = model_layer[0], outputs = output)
+    model.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
+    return model
 
 def gini(score,result):
     # count obsevations and positive outcomes
@@ -183,7 +197,7 @@ def gini(score,result):
 
     auc = 1 - sum(area) / (n_pos * (n - n_pos))
     gini = auc * 2 - 1
-
+    #:TODO test gini function.
     return gini
 
 ''' BELOW ARE NOTES FOR DEVLOPMENT DOWN THE LINE, YOU CAN IGNORE THIS
